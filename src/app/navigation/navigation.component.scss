@@ -1,0 +1,17 @@
+#navigation {
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#607ab2+0,b107f4+100 */
+    background: rgb(96, 122, 178); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(96, 122, 178, 1) 0%, rgba(177, 7, 244, 1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, rgba(96, 122, 178, 1) 0%, rgba(177, 7, 244, 1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, rgba(96, 122, 178, 1) 0%, rgba(177, 7, 244, 1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#607ab2', endColorstr='#b107f4', GradientType=0); /* IE6-9 */
+
+    .profile-pic {
+        width: 38px;
+        height: 38px;
+        border-radius: 30px;
+        margin: 0 10px;
+        border: 1px solid rgba(255, 255, 255, 0.31);
+    }
+}

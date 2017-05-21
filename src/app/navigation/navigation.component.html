@@ -5,14 +5,23 @@
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" routerLink="/dashboard">PP</a>
+        <a class="navbar-brand" routerLink="/dashboard">P.P.</a>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
                 <a *ngIf="isAdmin()" class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
             </div>
         </div>
-        <button class="btn btn-sm btn-secondary" (click)="onLogout()">logout</button>
-        <img [src]="getProfilePictureUrl()" class="profile-pic">
+        <div ngbDropdown class="dropdown">
+            <div id="dropdownBasic1" ngbDropdownToggle>
+                <div class="profile-pic-container">
+                    <i class="fa fa-caret-down fa-inverse"></i>
+                    <img [src]="getProfilePictureUrl()" class="profile-pic">
+                </div>
+            </div>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownBasic1">
+                <button class="dropdown-item" (click)="onLogout()">Logout</button>
+            </div>
+        </div>
     </nav>
 </section>

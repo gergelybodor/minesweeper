@@ -1,0 +1,14 @@
+#json-viewer {
+    margin: 30px;
+
+    .json-viewer {
+        margin-left: 30px;
+        color: #333;
+        font-size: 17px;
+        border-bottom: solid 1px #000000;
+
+        .toggle {
+            cursor: pointer;
+        }
+    }
+}

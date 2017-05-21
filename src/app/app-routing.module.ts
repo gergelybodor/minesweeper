@@ -34,6 +34,10 @@ const routes: Routes = [
         loadChildren: './projects/table/table.module#TableModule'
     },
     {
+        path: 'json-viewer',
+        loadChildren: './projects/json-viewer/json-viewer.module#JsonViewerModule'
+    },
+    {
         path: '**',
         redirectTo: 'dashboard'
     }

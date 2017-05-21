@@ -1,0 +1,20 @@
+<div *ngFor="let item of items; let i=index" [ngClass]="{'json-object': true, 'open': isOpen}">
+    <span *ngIf="!isObjectOrArray(object[item])" class="element-label">{{item}}:</span>
+    <span *ngIf="isObjectOrArray(object[item])" (click)="toggleShow(i)" class="element-label toggle">
+        <i [ngClass]="{'fa fa-fw fa-caret-right':true, 'fa-rotate-90': show[i]}"></i>
+        {{item}}:
+        <span *ngIf="isObject(object[item])" class="object">Object</span>
+        <span *ngIf="isArray(object[item])" class="array">Array({{object[item].length}})</span>
+    </span>
+    <span *ngIf="!isObjectOrArray(object[item])">
+        <span *ngIf="isString(object[item])" class="string">"{{object[item]}}"</span>
+        <span *ngIf="isNumber(object[item])" class="number">{{object[item]}}</span>
+        <span *ngIf="isBoolean(object[item])" class="boolean">{{object[item]}}</span>
+    </span>
+    <span *ngIf="isNull(object[item])" class="null">null</span>
+    <app-json-object
+        *ngIf="isObjectOrArray(object[item])"
+        [object]="object[item]"
+        [isOpen]="show[i]"
+    ></app-json-object>
+</div>

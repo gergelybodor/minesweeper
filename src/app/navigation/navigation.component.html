@@ -1,4 +1,4 @@
-<section id="navigation">
+<section id="navigation" class="bg-gradient">
     <nav class="navbar navbar-toggleable-sm navbar-inverse">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
@@ -7,9 +7,12 @@
         </button>
         <a class="navbar-brand" routerLink="/dashboard">P.P.</a>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
+            <div *ngIf="!selectedProject" class="navbar-nav">
                 <a class="nav-item nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
                 <a *ngIf="isAdmin()" class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+            </div>
+            <div *ngIf="selectedProject" class="navbar-nav">
+                <a class="nav-item nav-link" routerLink="{{selectedProject.route}}" routerLinkActive="active">{{selectedProject.name}}</a>
             </div>
         </div>
         <div ngbDropdown class="dropdown">

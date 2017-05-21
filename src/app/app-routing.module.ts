@@ -26,6 +26,10 @@ const routes: Routes = [
         component: LoginComponent
     },
     {
+        path: 'minesweeper',
+        loadChildren: './projects/minesweeper/minesweeper.module#MinesweeperModule'
+    },
+    {
         path: '**',
         redirectTo: 'dashboard'
     }

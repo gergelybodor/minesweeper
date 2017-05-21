@@ -16,6 +16,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 
 import { LoginService } from './login/login.service';
 import { AuthGuard } from './auth.guard';
+import { ProjectService } from './dashboard/project.service';
 
 export const fireBaseConfig = {
     apiKey: 'AIzaSyA0hQ_xYTiFevQjgjl6vj2jobfPV1DzqSw',
@@ -47,7 +48,8 @@ export const fireBaseConfig = {
     ],
     providers: [
         LoginService,
-        AuthGuard
+        AuthGuard,
+        ProjectService
     ],
     bootstrap: [AppComponent]
 })

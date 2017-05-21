@@ -22,6 +22,7 @@ export class LoginService {
     private _isAdmin = false;
     private _userUid: string;
     private _user: IUser;
+    private _userProjects: string[] = [];
 
     get isLoggedIn(): boolean {
         if (!this._isLoggedIn) {
@@ -70,6 +71,18 @@ export class LoginService {
         localStorage.setItem('user', JSON.stringify(value));
     }
 
+    get userProjects(): string[] {
+        if (!this._userProjects) {
+            return JSON.parse(localStorage.getItem('userProjects'));
+        }
+        return this._userProjects;
+    }
+
+    set userProjects(value: string[]) {
+        this._userProjects = value;
+        localStorage.setItem('userProjects', JSON.stringify(value));
+    }
+
     constructor(private afAuth: AngularFireAuth, private db: AngularFireDatabase, private router: Router) {
     }
 
@@ -82,6 +95,7 @@ export class LoginService {
                     this.user = user;
                     this.updateUser(user);
                     this.setIsAdmin(user);
+                    this.getUserProjects();
                     this.router.navigate(['/dashboard']);
                 });
             });
@@ -95,6 +109,15 @@ export class LoginService {
             localStorage.clear();
             this.router.navigate(['/login']);
         });
+    }
+
+    public getUserProjects() {
+        this.db.object('/users/' + this.userUid + '/projects').subscribe(
+            (projects: string[])=> {
+                this.userProjects = projects;
+            },
+            error => console.error(error)
+        );
     }
 
     private updateUser(user: IUser) {
@@ -126,5 +149,4 @@ export class LoginService {
             error => console.error(error)
         );
     }
-
 }

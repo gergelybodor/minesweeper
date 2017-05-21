@@ -1,4 +1,16 @@
-<app-navigation></app-navigation>
-<p>
-    dashboard works!
-</p>
+<section id="dashboard">
+    <div class="container">
+        <div class="row">
+            <div *ngFor="let project of projects" class="col">
+                <div class="card" (click)="navigateTo(project)">
+                    <div class="card-img-top bg-gradient">
+                        <div class="project-title">{{project.name}}</div>
+                    </div>
+                    <div class="card-block">
+                        <p class="card-text">{{project.description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

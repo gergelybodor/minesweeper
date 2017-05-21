@@ -30,6 +30,10 @@ const routes: Routes = [
         loadChildren: './projects/minesweeper/minesweeper.module#MinesweeperModule'
     },
     {
+        path: 'table',
+        loadChildren: './projects/table/table.module#TableModule'
+    },
+    {
         path: '**',
         redirectTo: 'dashboard'
     }

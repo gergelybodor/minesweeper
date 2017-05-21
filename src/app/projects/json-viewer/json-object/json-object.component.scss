@@ -1,0 +1,36 @@
+.json-object {
+    font-size: 17px;
+    margin-left: 45px;
+    height: 0;
+    overflow: hidden;
+
+    &.open {
+        height: auto;
+
+        .number {
+            color: #0e647d;
+        }
+
+        .string {
+            color: #62a962;
+        }
+
+        .boolean,
+        .null {
+            color: #B56309;
+        }
+    }
+
+    .label {
+        color: #2c333b;
+    }
+
+    .toggle {
+        cursor: pointer;
+
+        .object,
+        .array {
+            opacity: 0.3;
+        }
+    }
+}

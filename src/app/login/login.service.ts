@@ -13,6 +13,7 @@ interface IUser {
     displayName?: string;
     photoURL?: string;
     email?: string;
+    isAdmin?: boolean;
 }
 
 @Injectable()
@@ -20,6 +21,7 @@ export class LoginService {
     private _isLoggedIn = false;
     private _isAdmin = false;
     private _userUid: string;
+    private _user: IUser;
 
     get isLoggedIn(): boolean {
         if (!this._isLoggedIn) {
@@ -29,26 +31,43 @@ export class LoginService {
     }
 
     set isLoggedIn(value: boolean) {
+        localStorage.setItem('isLoggedIn', value ? 'true' : 'false');
         this._isLoggedIn = value;
     }
 
     get isAdmin(): boolean {
+        if (!this._isAdmin) {
+            return localStorage.getItem('isAdmin') === 'true';
+        }
         return this._isAdmin;
     }
 
     set isAdmin(value: boolean) {
         this._isAdmin = value;
+        localStorage.setItem('isAdmin', value ? 'true' : 'false');
     }
 
     get userUid(): string {
         if (!this._userUid) {
-            return localStorage.getItem('uid');
+            return JSON.parse(localStorage.getItem('user')).uid;
         }
         return this._userUid;
     }
 
     set userUid(value: string) {
         this._userUid = value;
+    }
+
+    get user(): IUser {
+        if (!this._user) {
+            return JSON.parse(localStorage.getItem('user'));
+        }
+        return this._user;
+    }
+
+    set user(value: IUser) {
+        this._user = value;
+        localStorage.setItem('user', JSON.stringify(value));
     }
 
     constructor(private afAuth: AngularFireAuth, private db: AngularFireDatabase, private router: Router) {
@@ -60,7 +79,7 @@ export class LoginService {
                 this.afAuth.authState.filter(user => !!user).subscribe((user: IUser) => {
                     this.isLoggedIn = true;
                     this.userUid = user.uid;
-                    this.setLocalStorage(user);
+                    this.user = user;
                     this.updateUser(user);
                     this.setIsAdmin(user);
                     this.router.navigate(['/dashboard']);
@@ -76,14 +95,6 @@ export class LoginService {
             localStorage.clear();
             this.router.navigate(['/login']);
         });
-    }
-
-    private setLocalStorage(user: IUser) {
-        localStorage.setItem('isLoggedIn', user.uid ? 'true' : 'false');
-        localStorage.setItem('uid', user.uid);
-        localStorage.setItem('photoUrl', user.photoURL);
-        localStorage.setItem('displayName', user.displayName);
-        localStorage.setItem('email', user.email);
     }
 
     private updateUser(user: IUser) {

@@ -20,6 +20,6 @@ export class NavigationComponent {
     }
 
     public getProfilePictureUrl(): string {
-        return localStorage.getItem('photoUrl');
+        return this.ls.user.photoURL;
     }
 }

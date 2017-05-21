@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        if(this.loginService.isLoggedIn) {
+        if (this.loginService.isLoggedIn) {
             this.router.navigate(['/dashboard']);
         }
     }

@@ -113,7 +113,7 @@ export class LoginService {
 
     public getUserProjects() {
         this.db.object('/users/' + this.userUid + '/projects').subscribe(
-            (projects: string[])=> {
+            (projects: string[]) => {
                 this.userProjects = projects;
             },
             error => console.error(error)

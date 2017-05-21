@@ -1,0 +1,102 @@
+<section id="table">
+    <table *ngIf="tableItems.length" class="table table-striped table-hover table-bordered table-responsive table-sm">
+        <thead>
+        <tr class="sorting-header">
+            <th (click)="setOrder('group')">
+                <i [ngClass]="getSortIconClassFor('group')"></i>
+                <span>Group name</span>
+            </th>
+            <th (click)="setOrder('name')">
+                <i [ngClass]="getSortIconClassFor('name')"></i>
+                <span>Config Name</span>
+            </th>
+            <th (click)="setOrder('category.root')">
+                <i [ngClass]="getSortIconClassFor('category.root')"></i>
+                <span>Root category</span>
+            </th>
+            <th (click)="setOrder('category.main')">
+                <i [ngClass]="getSortIconClassFor('category.main')"></i>
+                <span>Main category</span>
+            </th>
+            <th (click)="setOrder('category.sub')">
+                <i [ngClass]="getSortIconClassFor('category.sub')"></i>
+                <span>Sub category</span>
+            </th>
+            <th (click)="setOrder('time.start')">
+                <i [ngClass]="getSortIconClassFor('time.start')"></i>
+                <span>Next start time</span>
+            </th>
+            <th (click)="setOrder('time.end')">
+                <i [ngClass]="getSortIconClassFor('time.end')"></i>
+                <span>Finish time</span>
+            </th>
+            <th (click)="setOrder('time.duration')">
+                <i [ngClass]="getSortIconClassFor('time.duration')"></i>
+                <span>Last duration (s)</span>
+            </th>
+            <th (click)="setOrder('error')">
+                <i [ngClass]="getSortIconClassFor('error')"></i>
+                <span>Error</span>
+            </th>
+            <th (click)="setOrder('time.refresh')">
+                <i [ngClass]="getSortIconClassFor('time.refresh')"></i>
+                <span>Refresh minute</span>
+            </th>
+            <th (click)="setOrder('count.all')">
+                <i [ngClass]="getSortIconClassFor('count.all')"></i>
+                <span>All count</span>
+            </th>
+            <th (click)="setOrder('count.valid')">
+                <i [ngClass]="getSortIconClassFor('count.valid')"></i>
+                <span>Valid count</span>
+            </th>
+            <th (click)="setOrder('count.error')">
+                <i [ngClass]="getSortIconClassFor('count.error')"></i>
+                <span>Error count</span>
+            </th>
+        </tr>
+        <tr class="filter-header">
+            <th>
+                <input type="text" [(ngModel)]="filter.group" class="form-control" placeholder="Filter column">
+            </th>
+            <th>
+                <input type="text" [(ngModel)]="filter.name" class="form-control" placeholder="Filter column">
+            </th>
+            <th>
+                <input type="text" [(ngModel)]="filter.category.root" class="form-control" placeholder="Filter column">
+            </th>
+            <th>
+                <input type="text" [(ngModel)]="filter.category.main" class="form-control" placeholder="Filter column">
+            </th>
+            <th>
+                <input type="text" [(ngModel)]="filter.category.sub" class="form-control" placeholder="Filter column">
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of tableItems | tableFilterBy:filter | tableOrderBy:sortField:sortOrder">
+            <td>{{item.group}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.category.root}}</td>
+            <td>{{item.category.main}}</td>
+            <td>{{item.category.sub}}</td>
+            <td>{{item.time.start | date:'MM.dd. HH:mm'}}</td>
+            <td>{{item.time.end | date:'MM.dd. HH:mm'}}</td>
+            <td>{{item.time.duration}}</td>
+            <td>{{item.error}}</td>
+            <td>{{item.time.refresh}}</td>
+            <td>{{item.count.all}}</td>
+            <td>{{item.count.valid}}</td>
+            <td>{{item.count.error}}</td>
+        </tr>
+        </tbody>
+    </table>
+</section>

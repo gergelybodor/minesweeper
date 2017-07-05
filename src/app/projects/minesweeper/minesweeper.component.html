@@ -1,3 +1,9 @@
-<p>
-    minesweeper works!
-</p>
+<section id="minesweeper">
+    <div *ngFor="let row of grid" class="mine-row" [style.width.px]="rows*30">
+        <div *ngFor="let cell of row" class="mine-cell" (click)="onCellClick(cell.i, cell.j)">
+            <span *ngIf="cell.revealed && !cell.mine && cell.neighborCount">{{cell.neighborCount}}</span>
+            <span *ngIf="cell.revealed && !cell.mine && !cell.neighborCount"></span>
+            <span *ngIf="cell.revealed && cell.mine"><i class="fa fa-bomb"></i></span>
+        </div>
+    </div>
+</section>

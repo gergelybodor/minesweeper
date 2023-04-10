@@ -1,5 +1,3 @@
-// type Position = [number, number];
-
 type OpenResult = { mine: boolean; mineCount?: number };
 
 type Cell = { x: number; y: number; mine?: boolean; mineCount?: number; flagged?: boolean; blank?: boolean };

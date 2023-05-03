@@ -2,19 +2,8 @@
   display: block;
 }
 
-#minesweeper {
-  .mine-row {
-    .mine-cell {
-      height: 30px;
-      width: 30px;
-      border: 1px solid #000;
-      display: block;
-      float: left;
-      text-align: center;
-
-      span {
-        vertical-align: sub;
-      }
-    }
-  }
+.rendering-pixelated {
+  image-rendering: pixelated;
+  height: 32px;
+  width: 32px;
 }

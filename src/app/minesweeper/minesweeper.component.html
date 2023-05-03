@@ -1,16 +1,124 @@
-<div class="flex flex-col gap-y-0.5">
-  <div *ngFor="let row of minesweeper.cells" class="flex gap-x-0.5">
+<div class="flex flex-col">
+  <div *ngFor="let row of minesweeper.cells; trackBy: rowTrackByFn" class="flex">
     <div
-      *ngFor="let cell of row"
-      class="flex justify-center items-center rounded font-bold text-2xl h-8 w-8"
-      [class.bg-white]="!cell.blank"
-      [class.bg-neutral-400]="cell.blank"
+      *ngFor="let cell of row; trackBy: cellTrackByFn"
       (click)="onClick(cell.x, cell.y)"
       (contextmenu)="onRightClick($event, cell.x, cell.y)"
     >
-      <ng-container *ngIf="cell.mine">💣</ng-container>
-      <ng-container *ngIf="cell.flagged">🚩</ng-container>
-      <ng-container *ngIf="cell.mineCount">{{ cell.mineCount }}</ng-container>
+      <ng-container *ngIf="cell.mine">
+        <img
+          ngSrc="assets/sprites/win_95/sprite_mine.png"
+          alt="mine"
+          height="16"
+          width="16"
+          class="rendering-pixelated"
+        />
+      </ng-container>
+      <ng-container *ngIf="cell.flagged">
+        <img
+          ngSrc="assets/sprites/win_95/sprite_flag.png"
+          alt="mine"
+          height="16"
+          width="16"
+          class="rendering-pixelated"
+        />
+      </ng-container>
+      <ng-container *ngIf="cell.mineCount">
+        <ng-container [ngSwitch]="cell.mineCount">
+          <img
+            *ngSwitchCase="1"
+            ngSrc="assets/sprites/win_95/sprite_1.png"
+            alt="count_1"
+            height="16"
+            width="16"
+            class="rendering-pixelated"
+          />
+          <img
+            *ngSwitchCase="2"
+            ngSrc="assets/sprites/win_95/sprite_2.png"
+            alt="count_2"
+            height="16"
+            width="16"
+            class="rendering-pixelated"
+          />
+          <img
+            *ngSwitchCase="3"
+            ngSrc="assets/sprites/win_95/sprite_3.png"
+            alt="count_3"
+            height="16"
+            width="16"
+            class="rendering-pixelated"
+          />
+          <img
+            *ngSwitchCase="4"
+            ngSrc="assets/sprites/win_95/sprite_4.png"
+            alt="count_4"
+            height="16"
+            width="16"
+            class="rendering-pixelated"
+          />
+          <img
+            *ngSwitchCase="5"
+            ngSrc="assets/sprites/win_95/sprite_5.png"
+            alt="count_5"
+            height="16"
+            width="16"
+            class="rendering-pixelated"
+          />
+          <img
+            *ngSwitchCase="6"
+            ngSrc="assets/sprites/win_95/sprite_6.png"
+            alt="count_6"
+            height="16"
+            width="16"
+            class="rendering-pixelated"
+          />
+          <img
+            *ngSwitchCase="7"
+            ngSrc="assets/sprites/win_95/sprite_7.png"
+            alt="count_7"
+            height="16"
+            width="16"
+            class="rendering-pixelated"
+          />
+          <img
+            *ngSwitchCase="8"
+            ngSrc="assets/sprites/win_95/sprite_8.png"
+            alt="count_8"
+            height="16"
+            width="16"
+            class="rendering-pixelated"
+          />
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="cell.blank">
+        <img
+          ngSrc="assets/sprites/win_95/sprite_blank_pressed.png"
+          alt="mine"
+          height="16"
+          width="16"
+          class="rendering-pixelated"
+        />
+      </ng-container>
+      <ng-container *ngIf="!cell.blank && !cell.mineCount && !cell.flagged && !cell.mine">
+        <img
+          ngSrc="assets/sprites/win_95/sprite_blank.png"
+          alt="mine"
+          height="16"
+          width="16"
+          class="rendering-pixelated"
+        />
+      </ng-container>
     </div>
   </div>
+</div>
+
+<div>winning state: {{ minesweeper.isWinState }}</div>
+
+<div>mines: {{ minesweeper.mines.size - minesweeper.flaggedFields.size }}</div>
+
+<div class="flex gap-x-4">
+  <button (click)="startBeginnerGame()">Beginner</button>
+  <button (click)="startIntermediateGame()">Intermediate</button>
+  <button (click)="startExpertGame()">Expert</button>
 </div>

@@ -24,15 +24,16 @@
     automerge: false,
   },
 
+  major: {
+    enabled: false,
+  },
+
   packageRules: [
     // Prevent auto-merging for PRs that aren't lockfile maintenance
     {
       matchPackagePatterns: ['*'],
       automerge: false,
       rangeStrategy: 'replace',
-      major: {
-        enabled: false,
-      },
     },
     // Example of pinning a dependency to a specific version or range of versions
     // There's a ton of flexibility for doing this type of thing

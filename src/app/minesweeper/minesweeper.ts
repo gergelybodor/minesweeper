@@ -1,6 +1,6 @@
 type OpenResult = { mine: boolean; mineCount?: number };
 
-type Cell = { x: number; y: number; mine?: boolean; mineCount?: number; flagged?: boolean; blank?: boolean };
+export type Cell = { x: number; y: number; mine?: boolean; mineCount?: number; flagged?: boolean; blank?: boolean };
 
 export class Position {
   x: number;
@@ -39,24 +39,62 @@ export class Positions extends Set<Position> {
 export class Minesweeper {
   readonly width: number;
   readonly height: number;
+  pristine: boolean;
   mines: Positions;
   flaggedFields: Positions;
   openFields: Positions;
   lost: boolean;
 
-  constructor(width: number, height: number, mineCount: number) {
+  constructor(width: number, height: number, mineCount: number, x?: number, y?: number) {
     this.width = width;
     this.height = height;
     this.flaggedFields = new Positions();
     this.openFields = new Positions();
     this.lost = false;
+    this.pristine = true;
 
-    this.mines = new Positions();
+    if (x !== undefined && y !== undefined) {
+      this.mines = this.generateMinesWithSafeNeighbors(mineCount, width, height, x, y);
+    } else {
+      this.mines = this.generateMines(mineCount, width, height);
+    }
+    console.log(this.mines);
+  }
+
+  generateMines(mineCount: number, width: number, height: number): Positions {
+    const mines = new Positions();
     Array.from({ length: mineCount }).forEach(() => {
-      const x = Math.floor(Math.random() * width);
-      const y = Math.floor(Math.random() * height);
-      this.mines.add(new Position(x, y));
+      let [x, y] = this.generateRandomCoordinates(width, height);
+      while (mines.has(new Position(x, y))) {
+        [x, y] = this.generateRandomCoordinates(width, height);
+      }
+      mines.add(new Position(x, y));
     });
+    return mines;
+  }
+
+  generateMinesWithSafeNeighbors(mineCount: number, width: number, height: number, x: number, y: number): Positions {
+    const mines = new Positions();
+    const safeOrigin = new Position(x, y);
+    const safeNeighbors = this.iterNeighbours(safeOrigin);
+    const safePositions: Positions = new Positions();
+    safePositions.add(safeOrigin);
+    safeNeighbors.forEach((pos) => safePositions.add(pos));
+
+    Array.from({ length: mineCount }).forEach(() => {
+      let [x, y] = this.generateRandomCoordinates(width, height);
+      while (mines.has(new Position(x, y)) || safePositions.has(new Position(x, y))) {
+        [x, y] = this.generateRandomCoordinates(width, height);
+      }
+      mines.add(new Position(x, y));
+    });
+    return mines;
+  }
+
+  generateRandomCoordinates(width: number, height: number): [number, number] {
+    const x = Math.floor(Math.random() * width);
+    const y = Math.floor(Math.random() * height);
+    return [x, y];
   }
 
   iterNeighbours({ x, y }: Position): Position[] {
@@ -102,6 +140,7 @@ export class Minesweeper {
     }
 
     this.openFields.add(pos);
+    this.pristine = false;
 
     const isMine = this.mines.has(pos);
 
@@ -133,6 +172,10 @@ export class Minesweeper {
     } else {
       this.flaggedFields.add(pos);
     }
+  }
+
+  get isWinState(): boolean {
+    return this.width * this.height - this.mines.size === this.openFields.size && !this.lost;
   }
 
   get cells(): Cell[][] {

@@ -14,7 +14,7 @@ const EXPERT: Params = { width: 30, height: 16, mineCount: 99 };
   standalone: true,
   imports: [CommonModule, NgOptimizedImage],
   templateUrl: './minesweeper.component.html',
-  styleUrls: ['./minesweeper.component.scss'],
+  styleUrls: ['./minesweeper.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MinesweeperComponent {

@@ -6,7 +6,7 @@ import { MinesweeperComponent } from './minesweeper/minesweeper.component';
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [MinesweeperComponent],
 })

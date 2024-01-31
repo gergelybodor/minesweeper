@@ -1,7 +1,7 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { Cell, Minesweeper } from './minesweeper';
+import { Minesweeper } from './minesweeper';
 
 type Params = { width: number; height: number; mineCount: number };
 
@@ -20,10 +20,6 @@ const EXPERT: Params = { width: 30, height: 16, mineCount: 99 };
 export class MinesweeperComponent {
   minesweeper = new Minesweeper(8, 8, 10);
   private lastParams: Params = BEGINNER;
-
-  // TODO: rowTrackByFn shouldn't use index
-  rowTrackByFn: TrackByFunction<Cell[]> = (index) => index;
-  cellTrackByFn: TrackByFunction<Cell> = (index, cell) => `${cell.x}_${cell.y}`;
 
   onClick(x: number, y: number) {
     if (this.minesweeper.pristine) {

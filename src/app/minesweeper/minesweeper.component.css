@@ -2,8 +2,6 @@
   display: block;
 }
 
-.rendering-pixelated {
+.pixelated {
   image-rendering: pixelated;
-  height: 32px;
-  width: 32px;
 }

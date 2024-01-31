@@ -1,116 +1,53 @@
 <div class="flex flex-col">
-  <div *ngFor="let row of minesweeper.cells; trackBy: rowTrackByFn" class="flex">
-    <div
-      *ngFor="let cell of row; trackBy: cellTrackByFn"
-      (click)="onClick(cell.x, cell.y)"
-      (contextmenu)="onRightClick($event, cell.x, cell.y)"
-    >
-      <ng-container *ngIf="cell.mine">
-        <img
-          ngSrc="assets/sprites/win_95/sprite_mine.png"
-          alt="mine"
-          height="16"
-          width="16"
-          class="rendering-pixelated"
-        />
-      </ng-container>
-      <ng-container *ngIf="cell.flagged">
-        <img
-          ngSrc="assets/sprites/win_95/sprite_flag.png"
-          alt="mine"
-          height="16"
-          width="16"
-          class="rendering-pixelated"
-        />
-      </ng-container>
-      <ng-container *ngIf="cell.mineCount">
-        <ng-container [ngSwitch]="cell.mineCount">
-          <img
-            *ngSwitchCase="1"
-            ngSrc="assets/sprites/win_95/sprite_1.png"
-            alt="count_1"
-            height="16"
-            width="16"
-            class="rendering-pixelated"
-          />
-          <img
-            *ngSwitchCase="2"
-            ngSrc="assets/sprites/win_95/sprite_2.png"
-            alt="count_2"
-            height="16"
-            width="16"
-            class="rendering-pixelated"
-          />
-          <img
-            *ngSwitchCase="3"
-            ngSrc="assets/sprites/win_95/sprite_3.png"
-            alt="count_3"
-            height="16"
-            width="16"
-            class="rendering-pixelated"
-          />
-          <img
-            *ngSwitchCase="4"
-            ngSrc="assets/sprites/win_95/sprite_4.png"
-            alt="count_4"
-            height="16"
-            width="16"
-            class="rendering-pixelated"
-          />
-          <img
-            *ngSwitchCase="5"
-            ngSrc="assets/sprites/win_95/sprite_5.png"
-            alt="count_5"
-            height="16"
-            width="16"
-            class="rendering-pixelated"
-          />
-          <img
-            *ngSwitchCase="6"
-            ngSrc="assets/sprites/win_95/sprite_6.png"
-            alt="count_6"
-            height="16"
-            width="16"
-            class="rendering-pixelated"
-          />
-          <img
-            *ngSwitchCase="7"
-            ngSrc="assets/sprites/win_95/sprite_7.png"
-            alt="count_7"
-            height="16"
-            width="16"
-            class="rendering-pixelated"
-          />
-          <img
-            *ngSwitchCase="8"
-            ngSrc="assets/sprites/win_95/sprite_8.png"
-            alt="count_8"
-            height="16"
-            width="16"
-            class="rendering-pixelated"
-          />
-        </ng-container>
-      </ng-container>
-      <ng-container *ngIf="cell.blank">
-        <img
-          ngSrc="assets/sprites/win_95/sprite_blank_pressed.png"
-          alt="mine"
-          height="16"
-          width="16"
-          class="rendering-pixelated"
-        />
-      </ng-container>
-      <ng-container *ngIf="!cell.blank && !cell.mineCount && !cell.flagged && !cell.mine">
-        <img
-          ngSrc="assets/sprites/win_95/sprite_blank.png"
-          alt="mine"
-          height="16"
-          width="16"
-          class="rendering-pixelated"
-        />
-      </ng-container>
+  @for (row of minesweeper.cells; let rowIndex = $index; track rowIndex) {
+    <div class="flex">
+      @for (cell of row; let colIndex = $index; track colIndex) {
+        <button (click)="onClick(cell.x, cell.y)" (contextmenu)="onRightClick($event, cell.x, cell.y)">
+          @if (cell.mine) {
+            <img
+              ngSrc="assets/sprites/win_95/sprite_mine.png"
+              [alt]="'row_' + rowIndex + '_col_' + colIndex + '_mine'"
+              height="16"
+              width="16"
+              class="pixelated h-8 w-8"
+            />
+          } @else if (cell.flagged) {
+            <img
+              ngSrc="assets/sprites/win_95/sprite_flag.png"
+              [alt]="'row_' + rowIndex + '_col_' + colIndex + '_flag'"
+              height="16"
+              width="16"
+              class="pixelated h-8 w-8"
+            />
+          } @else if (cell.mineCount) {
+            <img
+              [ngSrc]="'assets/sprites/win_95/sprite_' + cell.mineCount + '.png'"
+              [alt]="'row_' + rowIndex + '_col_' + colIndex + '_mine-count_' + cell.mineCount"
+              height="16"
+              width="16"
+              class="pixelated h-8 w-8"
+            />
+          } @else if (cell.blank) {
+            <img
+              ngSrc="assets/sprites/win_95/sprite_blank_pressed.png"
+              [alt]="'row_' + rowIndex + '_col_' + colIndex + '_blank-pressed'"
+              height="16"
+              width="16"
+              class="pixelated h-8 w-8"
+            />
+          } @else {
+            <img
+              ngSrc="assets/sprites/win_95/sprite_blank.png"
+              [alt]="'row_' + rowIndex + '_col_' + colIndex + '_blank'"
+              height="16"
+              width="16"
+              class="pixelated h-8 w-8"
+            />
+          }
+        </button>
+      }
     </div>
-  </div>
+  }
 </div>
 
 <div>winning state: {{ minesweeper.isWinState }}</div>

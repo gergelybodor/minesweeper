@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-mine-counter',
@@ -9,16 +9,11 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, co
   styleUrl: './mine-counter.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MineCounterComponent implements OnChanges {
-  @Input({ required: true }) mines!: number;
+export class MineCounterComponent {
+  mines = input.required<number>();
 
-  mineCount = signal(0);
   mineCountDigits = computed<string[]>(() => {
-    const mineCount = this.mineCount();
+    const mineCount = this.mines();
     return mineCount.toString().padStart(3, '0').split('');
   });
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['mines']) this.mineCount.set(this.mines);
-  }
 }

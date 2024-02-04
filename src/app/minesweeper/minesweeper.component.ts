@@ -2,7 +2,7 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild, effect, inject, signal } from '@angular/core';
 
 import { MineCounterComponent } from './mine-counter/mine-counter.component';
-import { MinesweeperStore, Params } from './store';
+import { CellTypes, MinesweeperStore, Params } from './store';
 import { TimeCounterComponent } from './time-counter/time-counter.component';
 
 const BEGINNER: Params = { width: 8, height: 8, mineCount: 10 };
@@ -30,6 +30,8 @@ export class MinesweeperComponent implements OnInit {
   readonly mines = this.#store.mines;
   readonly flaggedFields = this.#store.flaggedFields;
 
+  readonly cellTypes = CellTypes;
+
   constructor() {
     effect(() => {
       const isLostState = this.#store.isLostState();
@@ -47,6 +49,7 @@ export class MinesweeperComponent implements OnInit {
   onClick(x: number, y: number) {
     if (this.#store.pristine()) {
       this.#store.start({ ...this.#lastParams(), x, y });
+      this.timeCounter.start();
     }
     this.#store.open(x, y);
   }
@@ -59,21 +62,18 @@ export class MinesweeperComponent implements OnInit {
   startBeginnerGame() {
     this.#store.start(BEGINNER);
     this.timeCounter.reset();
-    this.timeCounter.start();
     this.#lastParams.set(BEGINNER);
   }
 
   startIntermediateGame() {
     this.#store.start(INTERMEDIATE);
     this.timeCounter.reset();
-    this.timeCounter.start();
     this.#lastParams.set(INTERMEDIATE);
   }
 
   startExpertGame() {
     this.#store.start(EXPERT);
     this.timeCounter.reset();
-    this.timeCounter.start();
     this.#lastParams.set(EXPERT);
   }
 }

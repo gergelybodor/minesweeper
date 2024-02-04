@@ -1,7 +1,3 @@
-export type OpenResult = { mine: boolean; mineCount?: number };
-
-export type Cell = { x: number; y: number; mine?: boolean; mineCount?: number; flagged?: boolean; blank?: boolean };
-
 export class Position {
   x: number;
   y: number;
@@ -13,6 +9,10 @@ export class Position {
 
   toString(): string {
     return `${this.x},${this.y}`;
+  }
+
+  equals(other: Position): boolean {
+    return this.x === other.x && this.y === other.y;
   }
 }
 
@@ -44,7 +44,28 @@ export interface State {
   flaggedFields: Positions;
   openFields: Positions;
   lost: boolean;
+  lastClicked?: Position;
 }
 
 export type Params = { width: number; height: number; mineCount: number; x?: number; y?: number };
 export type RequiredParams = Required<Params>;
+
+export const CellTypes = {
+  blank: 'blank',
+  blankPressed: 'blankPressed',
+  flag: 'flag',
+  mine: 'mine',
+  mineRed: 'mineRed',
+  question: 'question',
+  questionPressed: 'questionPressed',
+  x: 'x',
+  count: 'count',
+} as const;
+export type CellType = (typeof CellTypes)[keyof typeof CellTypes];
+
+export type Cell = {
+  x: number;
+  y: number;
+  mines: number;
+  type: CellType;
+};

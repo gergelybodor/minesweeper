@@ -1,5 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, computed, signal } from '@angular/core';
 
 @Component({
   selector: 'app-time-counter',
@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, signal
   styleUrl: './time-counter.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TimeCounterComponent implements OnInit, OnDestroy {
+export class TimeCounterComponent implements OnDestroy {
   time = signal<number>(0);
   digits = computed<string[]>(() => {
     const time = this.time();
@@ -17,10 +17,6 @@ export class TimeCounterComponent implements OnInit, OnDestroy {
   });
 
   #interval: number | undefined;
-
-  ngOnInit() {
-    this.start();
-  }
 
   ngOnDestroy() {
     this.stop();
@@ -37,6 +33,7 @@ export class TimeCounterComponent implements OnInit, OnDestroy {
   }
 
   reset() {
+    this.stop();
     this.time.set(0);
   }
 }

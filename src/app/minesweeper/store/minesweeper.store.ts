@@ -1,6 +1,6 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-import { Cell, OpenResult, Params, Position, Positions, RequiredParams, State } from './minesweeper.types';
+import { Cell, CellTypes, Params, Position, Positions, RequiredParams, State } from './minesweeper.types';
 
 @Injectable()
 export class MinesweeperStore {
@@ -45,50 +45,72 @@ export class MinesweeperStore {
     });
   }
 
-  open(x: number, y: number): OpenResult | undefined {
-    const pos = new Position(x, y);
+  open(x: number, y: number) {
     const { width, height, flaggedFields, openFields, mines, lost } = this.state();
-    if (this.state().openFields.has(pos)) {
-      const mineCount = this.neighbouringMines(pos, width, height, mines);
-      const flagCount = this.iterNeighbours(pos, width, height).filter((neighbour) =>
-        flaggedFields.has(neighbour),
-      ).length;
+    const pos = new Position(x, y);
 
-      if (mineCount === flagCount) {
-        for (const neighbour of this.iterNeighbours(pos, width, height)) {
-          if (!flaggedFields.has(neighbour) && !openFields.has(neighbour)) {
-            this.open(neighbour.x, neighbour.y);
-          }
-        }
-      }
-
-      return undefined;
-    }
-
+    // if the game is lost or the field is flagged
     if (lost || flaggedFields.has(pos)) {
-      return undefined;
+      // noop
+      return;
     }
 
-    openFields.add(pos);
-    this.state.update((state) => ({ ...state, pristine: false }));
+    // if the field is already open
+    else if (openFields.has(pos)) {
+      // handle open propagation/bubbling
+      this.handleOpenPropagation(pos, width, height, mines, openFields, flaggedFields);
+    }
 
-    const isMine = mines.has(pos);
+    // if the field is not yet open
+    else {
+      openFields.add(pos);
 
-    if (isMine) {
-      this.state.update((state) => ({ ...state, lost: true }));
-      return { mine: true };
-    } else {
-      const mineCount = this.neighbouringMines(pos, width, height, mines);
+      // update state
+      this.state.update((state) => ({ ...state, openFields, pristine: false, lastClicked: pos }));
 
-      if (mineCount === 0) {
-        for (const neighbour of this.iterNeighbours(pos, width, height)) {
-          if (!openFields.has(neighbour)) {
-            this.open(neighbour.x, neighbour.y);
+      const isMine = mines.has(pos);
+
+      if (isMine) {
+        this.state.update((state) => ({ ...state, lost: true }));
+      } else {
+        const mineCount = this.neighbouringMines(pos, width, height, mines);
+
+        if (mineCount === 0) {
+          for (const neighbour of this.iterNeighbours(pos, width, height)) {
+            if (!openFields.has(neighbour)) {
+              this.open(neighbour.x, neighbour.y);
+            }
           }
         }
       }
+    }
+  }
 
-      return { mine: false, mineCount };
+  private handleOpenPropagation(
+    pos: Position,
+    width: number,
+    height: number,
+    mines: Positions,
+    openFields: Positions,
+    flaggedFields: Positions,
+  ) {
+    // get the number of mines around the field
+    const mineCount = this.neighbouringMines(pos, width, height, mines);
+    // get the number of flags around the field
+    const flagCount = this.iterNeighbours(pos, width, height).filter((neighbour) =>
+      flaggedFields.has(neighbour),
+    ).length;
+
+    // if the number of flags around the field is equal to the number of mines around the field
+    if (mineCount === flagCount) {
+      // loop through the neighbours
+      for (const neighbour of this.iterNeighbours(pos, width, height)) {
+        // if the neighbour is not flagged and not open
+        if (!flaggedFields.has(neighbour) && !openFields.has(neighbour)) {
+          // open the neighbour, which will recursively open all the neighbours of the neighbour
+          this.open(neighbour.x, neighbour.y);
+        }
+      }
     }
   }
 
@@ -117,33 +139,41 @@ export class MinesweeperStore {
   });
 
   cells = computed<Cell[][]>(() => {
-    const { width, height, openFields, flaggedFields, mines, lost } = this.state();
-    const a = Array.from({ length: height }).map((_, y) => {
+    const { width, height, openFields, flaggedFields, mines, lost, lastClicked } = this.state();
+
+    return Array.from({ length: height }).map((_, y) => {
       return Array.from({ length: width }).map((_, x) => {
         const pos = new Position(x, y);
+        const mineCount = this.neighbouringMines(pos, width, height, mines);
 
-        if (!openFields.has(pos)) {
-          if (lost && mines.has(pos)) {
-            return { x, y, mine: true };
-          } else if (flaggedFields.has(pos)) {
-            return { x, y, flagged: true };
-          } else {
-            return { x, y };
-          }
-        } else if (mines.has(pos)) {
-          return { x, y, mine: true };
-        } else {
-          const mineCount = this.neighbouringMines(pos, width, height, mines);
+        const cell: Cell = { x, y, mines: mineCount, type: CellTypes.blank };
 
+        if (openFields.has(pos) && !mines.has(pos)) {
           if (mineCount > 0) {
-            return { x, y, mineCount };
+            cell.type = CellTypes.count;
           } else {
-            return { x, y, blank: true };
+            cell.type = CellTypes.blankPressed;
           }
         }
+
+        if (lost) {
+          if (flaggedFields.has(pos) && mines.has(pos)) {
+            cell.type = CellTypes.flag;
+          } else if (flaggedFields.has(pos) && !mines.has(pos)) {
+            cell.type = CellTypes.x;
+          } else if (mines.has(pos) && lastClicked?.equals(pos)) {
+            cell.type = CellTypes.mineRed;
+          } else if (mines.has(pos)) {
+            cell.type = CellTypes.mine;
+          }
+        } else {
+          if (flaggedFields.has(pos)) {
+            cell.type = CellTypes.flag;
+          }
+        }
+        return cell;
       });
     });
-    return a;
   });
 
   private generateMines({ mineCount, width, height }: Params): Positions {

@@ -2,7 +2,11 @@
 module.exports = {
   content: ['./src/**/*.{html,ts}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        win95: '#018281',
+      },
+    },
   },
   plugins: [],
 };

@@ -1,10 +1,10 @@
 <div class="flex justify-between">
-  <app-mine-counter [mines]="minesweeper.mines.size - minesweeper.flaggedFields.size" />
+  <app-mine-counter [mines]="mines().size - flaggedFields().size" />
   <app-time-counter />
 </div>
 
 <div class="flex flex-col">
-  @for (row of minesweeper.cells; let rowIndex = $index; track rowIndex) {
+  @for (row of cells(); let rowIndex = $index; track rowIndex) {
     <div class="flex">
       @for (cell of row; let colIndex = $index; track colIndex) {
         <button (click)="onClick(cell.x, cell.y)" (contextmenu)="onRightClick($event, cell.x, cell.y)">
@@ -54,10 +54,6 @@
     </div>
   }
 </div>
-
-<div>winning state: {{ minesweeper.isWinState }}</div>
-
-<div>mines: {{ minesweeper.mines.size - minesweeper.flaggedFields.size }}</div>
 
 <div class="flex gap-x-4">
   <button (click)="startBeginnerGame()">Beginner</button>

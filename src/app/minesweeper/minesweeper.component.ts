@@ -1,7 +1,9 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { MineCounterComponent } from './mine-counter/mine-counter.component';
 import { Minesweeper } from './minesweeper';
+import { TimeCounterComponent } from './time-counter/time-counter.component';
 
 type Params = { width: number; height: number; mineCount: number };
 
@@ -12,7 +14,7 @@ const EXPERT: Params = { width: 30, height: 16, mineCount: 99 };
 @Component({
   selector: 'app-minesweeper',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule, NgOptimizedImage, TimeCounterComponent, MineCounterComponent],
   templateUrl: './minesweeper.component.html',
   styleUrls: ['./minesweeper.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

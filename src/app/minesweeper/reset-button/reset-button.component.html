@@ -1,0 +1,45 @@
+<button (click)="onClick()" (mousedown)="onMouseDown()" (mouseup)="onMouseUp()">
+  @if (isActive()) {
+    <img
+      ngSrc="assets/sprites/win_95/smiley_o.png"
+      alt="smiley_o"
+      height="24"
+      width="24"
+      class="pixelated h-12 w-12 pointer-events-none"
+    />
+  } @else if (isPressed()) {
+    <img
+      ngSrc="assets/sprites/win_95/smiley_pressed.png"
+      alt="smiley_pressed"
+      height="24"
+      width="24"
+      class="pixelated h-12 w-12 pointer-events-none"
+    />
+  } @else {
+    @if (isLostState()) {
+      <img
+        ngSrc="assets/sprites/win_95/smiley_lost.png"
+        alt="smiley_lost"
+        height="24"
+        width="24"
+        class="pixelated h-12 w-12 pointer-events-none"
+      />
+    } @else if (isWinState()) {
+      <img
+        ngSrc="assets/sprites/win_95/smiley_won.png"
+        alt="smiley_won"
+        height="24"
+        width="24"
+        class="pixelated h-12 w-12 pointer-events-none"
+      />
+    } @else {
+      <img
+        ngSrc="assets/sprites/win_95/smiley.png"
+        alt="smiley"
+        height="24"
+        width="24"
+        class="pixelated h-12 w-12 pointer-events-none"
+      />
+    }
+  }
+</button>

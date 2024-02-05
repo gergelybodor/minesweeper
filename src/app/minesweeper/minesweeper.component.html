@@ -1,5 +1,13 @@
 <div class="flex justify-between">
   <app-mine-counter [mines]="mines().size - flaggedFields().size" />
+
+  <app-reset-button
+    [tick]="openedTick()"
+    [isWinState]="isWinState()"
+    [isLostState]="isLostState()"
+    (clicked)="restart()"
+  />
+
   <app-time-counter />
 </div>
 
@@ -7,7 +15,7 @@
   @for (row of cells(); let rowIndex = $index; track rowIndex) {
     <div class="flex">
       @for (cell of row; let colIndex = $index; track colIndex) {
-        <button (click)="onClick(cell.x, cell.y)" (contextmenu)="onRightClick($event, cell.x, cell.y)">
+        <button (click)="onClick($event, cell.x, cell.y)" (contextmenu)="onRightClick($event, cell.x, cell.y)">
           @switch (cell.type) {
             @case (cellTypes.blank) {
               <img

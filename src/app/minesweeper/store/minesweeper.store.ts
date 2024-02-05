@@ -58,7 +58,7 @@ export class MinesweeperStore {
     // if the field is already open
     else if (openFields.has(pos)) {
       // handle open propagation/bubbling
-      this.handleOpenPropagation(pos, width, height, mines, openFields, flaggedFields);
+      return this.handleOpenPropagation(pos, width, height, mines, openFields, flaggedFields);
     }
 
     // if the field is not yet open
@@ -83,6 +83,8 @@ export class MinesweeperStore {
           }
         }
       }
+
+      return true;
     }
   }
 
@@ -111,7 +113,11 @@ export class MinesweeperStore {
           this.open(neighbour.x, neighbour.y);
         }
       }
+
+      return true;
     }
+
+    return;
   }
 
   toggleFlag(x: number, y: number) {

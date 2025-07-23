@@ -1,10 +1,10 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild, effect, inject, signal } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
+import { Component, OnInit, effect, inject, signal, viewChild } from '@angular/core';
 
-import { MineCounterComponent } from './mine-counter/mine-counter.component';
-import { ResetButtonComponent } from './reset-button/reset-button.component';
+import { MineCounter } from './mine-counter/mine-counter';
+import { ResetButton } from './reset-button/reset-button';
 import { CellTypes, MinesweeperStore, Params } from './store';
-import { TimeCounterComponent } from './time-counter/time-counter.component';
+import { TimeCounter } from './time-counter/time-counter';
 
 const BEGINNER: Params = { width: 8, height: 8, mineCount: 10 };
 const INTERMEDIATE: Params = { width: 16, height: 16, mineCount: 40 };
@@ -12,16 +12,14 @@ const EXPERT: Params = { width: 30, height: 16, mineCount: 99 };
 
 @Component({
   selector: 'app-minesweeper',
-  standalone: true,
-  imports: [CommonModule, NgOptimizedImage, TimeCounterComponent, MineCounterComponent, ResetButtonComponent],
-  templateUrl: './minesweeper.component.html',
-  styleUrls: ['./minesweeper.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MineCounter, ResetButton, TimeCounter, NgOptimizedImage],
+  templateUrl: './minesweeper.html',
+  styleUrl: './minesweeper.css',
   providers: [MinesweeperStore],
 })
-export class MinesweeperComponent implements OnInit {
-  @ViewChild(TimeCounterComponent) timeCounter!: TimeCounterComponent;
-  @ViewChild(MineCounterComponent) mineCounter!: MineCounterComponent;
+export class Minesweeper implements OnInit {
+  readonly timeCounter = viewChild(TimeCounter);
+  readonly mineCounter = viewChild(MineCounter);
 
   readonly #store = inject(MinesweeperStore);
 
@@ -40,8 +38,9 @@ export class MinesweeperComponent implements OnInit {
     effect(() => {
       const isLostState = this.#store.isLostState();
       const isWinState = this.#store.isWinState();
-      if (isLostState || isWinState) {
-        this.timeCounter.stop();
+      const timeCounter = this.timeCounter();
+      if (timeCounter && (isLostState || isWinState)) {
+        timeCounter.stop();
       }
     });
   }
@@ -51,6 +50,9 @@ export class MinesweeperComponent implements OnInit {
   }
 
   onClick(event: MouseEvent, x: number, y: number) {
+    const timeCounter = this.timeCounter();
+    if (!timeCounter) return;
+
     if (this.isLostState() || this.isWinState()) {
       event.preventDefault();
       event.stopPropagation();
@@ -59,7 +61,7 @@ export class MinesweeperComponent implements OnInit {
 
     if (this.#store.pristine()) {
       this.#store.start({ ...this.#lastParams(), x, y });
-      this.timeCounter.start();
+      timeCounter.start();
     }
     const openResult = this.#store.open(x, y);
 
@@ -80,25 +82,37 @@ export class MinesweeperComponent implements OnInit {
   }
 
   startBeginnerGame() {
+    const timeCounter = this.timeCounter();
+    if (!timeCounter) return;
     this.#store.start(BEGINNER);
-    this.timeCounter.reset();
+
+    timeCounter.reset();
     this.#lastParams.set(BEGINNER);
   }
 
   startIntermediateGame() {
+    const timeCounter = this.timeCounter();
+    if (!timeCounter) return;
+
     this.#store.start(INTERMEDIATE);
-    this.timeCounter.reset();
+    timeCounter.reset();
     this.#lastParams.set(INTERMEDIATE);
   }
 
   startExpertGame() {
+    const timeCounter = this.timeCounter();
+    if (!timeCounter) return;
+
     this.#store.start(EXPERT);
-    this.timeCounter.reset();
+    timeCounter.reset();
     this.#lastParams.set(EXPERT);
   }
 
   restart() {
+    const timeCounter = this.timeCounter();
+    if (!timeCounter) return;
+
     this.#store.start(this.#lastParams());
-    this.timeCounter.reset();
+    timeCounter.reset();
   }
 }

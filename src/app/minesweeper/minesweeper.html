@@ -19,7 +19,7 @@
           @switch (cell.type) {
             @case (cellTypes.blank) {
               <img
-                ngSrc="assets/sprites/win_95/sprite_blank.png"
+                ngSrc="sprites/win_95/sprite_blank.png"
                 [alt]="'row_' + rowIndex + '_col_' + colIndex + '_blank'"
                 height="16"
                 width="16"
@@ -28,7 +28,7 @@
             }
             @case (cellTypes.blankPressed) {
               <img
-                ngSrc="assets/sprites/win_95/sprite_blank_pressed.png"
+                ngSrc="sprites/win_95/sprite_blank_pressed.png"
                 [alt]="'row_' + rowIndex + '_col_' + colIndex + '_blank-pressed'"
                 height="16"
                 width="16"
@@ -37,7 +37,7 @@
             }
             @case (cellTypes.flag) {
               <img
-                ngSrc="assets/sprites/win_95/sprite_flag.png"
+                ngSrc="sprites/win_95/sprite_flag.png"
                 [alt]="'row_' + rowIndex + '_col_' + colIndex + '_flag'"
                 height="16"
                 width="16"
@@ -46,7 +46,7 @@
             }
             @case (cellTypes.mine) {
               <img
-                ngSrc="assets/sprites/win_95/sprite_mine.png"
+                ngSrc="sprites/win_95/sprite_mine.png"
                 [alt]="'row_' + rowIndex + '_col_' + colIndex + '_mine'"
                 height="16"
                 width="16"
@@ -55,7 +55,7 @@
             }
             @case (cellTypes.mineRed) {
               <img
-                ngSrc="assets/sprites/win_95/sprite_mine_red.png"
+                ngSrc="sprites/win_95/sprite_mine_red.png"
                 [alt]="'row_' + rowIndex + '_col_' + colIndex + '_mine'"
                 height="16"
                 width="16"
@@ -66,7 +66,7 @@
             @case (cellTypes.questionPressed) {}
             @case (cellTypes.x) {
               <img
-                ngSrc="assets/sprites/win_95/sprite_x.png"
+                ngSrc="sprites/win_95/sprite_x.png"
                 [alt]="'row_' + rowIndex + '_col_' + colIndex + '_flag'"
                 height="16"
                 width="16"
@@ -75,7 +75,7 @@
             }
             @case (cellTypes.count) {
               <img
-                [ngSrc]="'assets/sprites/win_95/sprite_' + cell.mines + '.png'"
+                [ngSrc]="'sprites/win_95/sprite_' + cell.mines + '.png'"
                 [alt]="'row_' + rowIndex + '_col_' + colIndex + '_mine-count_' + cell.mines"
                 height="16"
                 width="16"

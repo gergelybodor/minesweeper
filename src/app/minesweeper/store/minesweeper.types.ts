@@ -47,7 +47,14 @@ export interface State {
   lastClicked?: Position;
 }
 
-export type Params = { width: number; height: number; mineCount: number; x?: number; y?: number };
+export interface Params {
+  width: number;
+  height: number;
+  mineCount: number;
+  x?: number;
+  y?: number;
+}
+
 export type RequiredParams = Required<Params>;
 
 export const CellTypes = {
@@ -61,11 +68,12 @@ export const CellTypes = {
   x: 'x',
   count: 'count',
 } as const;
+
 export type CellType = (typeof CellTypes)[keyof typeof CellTypes];
 
-export type Cell = {
+export interface Cell {
   x: number;
   y: number;
   mines: number;
   type: CellType;
-};
+}

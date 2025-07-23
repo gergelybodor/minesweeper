@@ -14,9 +14,9 @@
       }
     }
   ],
-  "importOrder": ["^[@/(.*)|a-z|A-Z|0-9]$", "^@environment", "^[../]", "^[./]"],
+  "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "importOrder": ["^[@/(.*)|a-z|A-Z|0-9]$", "^@env", "^[../]", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
-  "importOrderParserPlugins": ["decorators-legacy", "typescript"],
-  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+  "importOrderParserPlugins": ["decorators-legacy", "typescript"]
 }

@@ -1,15 +1,13 @@
 import { NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, computed, signal } from '@angular/core';
+import { Component, OnDestroy, computed, signal } from '@angular/core';
 
 @Component({
   selector: 'app-time-counter',
-  standalone: true,
   imports: [NgOptimizedImage],
-  templateUrl: './time-counter.component.html',
-  styleUrl: './time-counter.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './time-counter.html',
+  styleUrl: './time-counter.css',
 })
-export class TimeCounterComponent implements OnDestroy {
+export class TimeCounter implements OnDestroy {
   time = signal<number>(0);
   digits = computed<string[]>(() => {
     const time = this.time();

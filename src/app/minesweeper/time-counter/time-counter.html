@@ -1,6 +1,6 @@
-@for (digit of mineCountDigits(); track $index) {
+@for (digit of digits(); track $index) {
   <img
-    [ngSrc]="'assets/sprites/win_95/time_' + digit + '.png'"
+    [ngSrc]="'sprites/win_95/time_' + digit + '.png'"
     [alt]="'pos' + $index + 'digit_' + digit"
     width="13"
     height="23"

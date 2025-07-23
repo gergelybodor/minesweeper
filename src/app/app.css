@@ -1,0 +1,3 @@
+:host {
+  @apply flex min-h-screen items-center justify-center bg-[#018281];
+}
